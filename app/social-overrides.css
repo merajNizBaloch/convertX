@@ -62,6 +62,11 @@ header .mx-auto::after {
   display: none !important;
 }
 
+/* Remove the old processing-info rows from every theme. */
+.work-grid aside > div.mt-4.space-y-2 {
+  display: none !important;
+}
+
 /* Light mode keeps the icon silhouettes and controls high contrast. */
 html[data-theme="light"] .convertx-social-link {
   border-color: #d5dde6;
