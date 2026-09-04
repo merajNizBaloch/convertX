@@ -43,6 +43,7 @@ export default function Workspace() {
   const [height, setHeight] = useState(800);
   const [format, setFormat] = useState<"jpg" | "png">("jpg");
   const [splitPage, setSplitPage] = useState(1);
+  const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
   const tool = tools.find(t => t.id === toolId)!;
 
   const totalInput = files.reduce((n, f) => n + f.size, 0);
@@ -178,13 +179,27 @@ export default function Workspace() {
       </div>
     </section>
 
-    <nav className="fixed bottom-3 left-1/2 z-50 -translate-x-1/2 rounded-[26px] border border-white/15 bg-[#1b1e20]/95 px-2 pb-2 pt-2 shadow-2xl shadow-black/60 backdrop-blur-2xl sm:bottom-4">
+    <nav className="desktop-tool-dock fixed bottom-3 left-1/2 z-50 -translate-x-1/2 rounded-[26px] border border-white/15 bg-[#1b1e20]/95 px-2 pb-2 pt-2 shadow-2xl shadow-black/60 backdrop-blur-2xl sm:bottom-4">
       <div className="flex max-w-[calc(100vw-20px)] items-end gap-1 overflow-visible px-1 pt-1 scrollbar-none">
         {grouped.flatMap(g=>g.items).map(t=>{const Active=t.id===toolId; return <button key={t.id} onClick={()=>selectTool(t.id)} aria-label={t.title} className="dock-item group relative flex w-[68px] shrink-0 flex-col items-center justify-end gap-1 rounded-2xl p-1.5 text-white/50">
-          <span className={`grid h-11 w-11 place-items-center rounded-[15px] border shadow-lg transition ${Active ? "scale-105 border-white/30" : "border-white/10"}`} style={{color:t.color, backgroundColor:Active ? t.color : t.tint, boxShadow:Active ? `0 8px 24px ${t.color}35` : undefined}}><t.icon size={20} strokeWidth={2.2}/></span>
+          <span className={`grid h-11 w-11 place-items-center rounded-[15px] border shadow-lg transition ${Active ? "scale-105 border-white/30" : "border-white/10"}`} style={{color:t.color, backgroundColor:t.tint, boxShadow:Active ? `0 8px 24px ${t.color}35` : undefined}}><t.icon size={20} strokeWidth={2.2}/></span>
           <span className={`dock-label pointer-events-none max-w-[66px] truncate text-center text-[8px] font-bold leading-3 tracking-tight text-white ${Active ? "opacity-100 translate-y-0" : "opacity-75"}`}>{t.title}</span>
         </button>})}
       </div>
     </nav>
+
+    <div className="mobile-tool-launcher">
+      {mobileToolsOpen && <button aria-label="Close tools" className="mobile-tool-backdrop" onClick={()=>setMobileToolsOpen(false)} />}
+      {mobileToolsOpen && <div className="mobile-tool-panel">
+        <div className="mobile-tool-panel-title">Choose a tool</div>
+        <div className="mobile-tool-grid">
+          {tools.map(t=>{const Active=t.id===toolId; return <button key={t.id} onClick={()=>{selectTool(t.id);setMobileToolsOpen(false)}} aria-label={t.title} className={`mobile-tool-button ${Active ? "is-active" : ""}`}>
+            <span className="mobile-tool-icon" style={{color:t.color,backgroundColor:t.tint}}><t.icon size={20} strokeWidth={2.2}/></span>
+            <span className="mobile-tool-name">{t.title}</span>
+          </button>})}
+        </div>
+      </div>}
+      <button type="button" aria-expanded={mobileToolsOpen} aria-label={mobileToolsOpen ? "Close tools" : "Open tools"} onClick={()=>setMobileToolsOpen(v=>!v)} className="mobile-tool-toggle"><span></span><span></span><span></span></button>
+    </div>
   </main>;
 }
