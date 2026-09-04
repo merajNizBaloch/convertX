@@ -64,7 +64,19 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="convertx-app-shell">
+          {children}
+          <a
+            href="https://www.techcraftsolution.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="techcraft-credit"
+          >
+            Made with <span aria-hidden="true">♥</span> by <strong>TechCraft</strong>
+          </a>
+        </div>
+      </body>
     </html>
   );
 }
