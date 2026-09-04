@@ -26,26 +26,18 @@ const socials = [
   },
 ];
 
-const SOCIAL_ID = "convertx-social-links";
-
 export default function SocialLinks() {
-  const [mounted, setMounted] = useState(false);
+  const [headerSlot, setHeaderSlot] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    setMounted(true);
+    const header = document.querySelector("header > div");
+    if (header instanceof HTMLElement) setHeaderSlot(header);
   }, []);
 
-  if (!mounted) return null;
-
-  const headerSlot = document.querySelector("header > div");
   if (!headerSlot) return null;
 
-  // Keep exactly one social group in the header, even during client re-mounts.
-  const existing = headerSlot.querySelector(`#${SOCIAL_ID}`);
-  if (existing) return null;
-
   return createPortal(
-    <nav id={SOCIAL_ID} className="convertx-social-links" aria-label="ConvertX social media">
+    <nav className="convertx-social-links" aria-label="ConvertX social media">
       {socials.map((social) => (
         <a
           key={social.name}
