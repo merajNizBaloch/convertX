@@ -1,0 +1,26 @@
+/* ConvertX conversion cursor: paired circular arrows around the pointer. */
+:root {
+  --convertx-cursor-size: 28px;
+}
+
+html, body,
+html *, body * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13.5' fill='%23111315' fill-opacity='.92' stroke='%23e0a14a' stroke-width='1.5'/%3E%3Cpath d='M10 13.5a7 7 0 0 1 10.8-2.1l1.4 1.2' fill='none' stroke='%23f4f1e8' stroke-width='2.3' stroke-linecap='round'/%3E%3Cpath d='m20.9 9.8 1.4 2.8-3.1-.4' fill='%23e0a14a'/%3E%3Cpath d='M22 18.5a7 7 0 0 1-10.8 2.1l-1.4-1.2' fill='none' stroke='%23e0a14a' stroke-width='2.3' stroke-linecap='round'/%3E%3Cpath d='m11.1 22.2-1.4-2.8 3.1.4' fill='%23f4f1e8'/%3E%3C/svg%3E") 4 4, auto !important;
+}
+
+a, button, summary, label, select,
+[role="button"], [role="link"], input[type="submit"], input[type="button"] {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13.5' fill='%23e0a14a' fill-opacity='.12' stroke='%23e0a14a' stroke-width='1.7'/%3E%3Cpath d='M10 13.5a7 7 0 0 1 10.8-2.1l1.4 1.2' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='m20.9 9.8 1.4 2.8-3.1-.4' fill='%23ffffff'/%3E%3Cpath d='M22 18.5a7 7 0 0 1-10.8 2.1l-1.4-1.2' fill='none' stroke='%23e0a14a' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='m11.1 22.2-1.4-2.8 3.1.4' fill='%23ffffff'/%3E%3C/svg%3E") 16 16, pointer !important;
+}
+
+input[type="text"], input[type="number"], input[type="range"], textarea, [contenteditable="true"] {
+  cursor: text !important;
+}
+
+@media (pointer: coarse) {
+  html, body, html *, body * { cursor: auto !important; }
+  a, button, summary, label, select,
+  [role="button"], [role="link"], input[type="submit"], input[type="button"] {
+    cursor: pointer !important;
+  }
+}
