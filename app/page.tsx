@@ -1,5 +1,5 @@
-import Workspace from "./workspace";
+import WorkspaceClient from "./workspace-client";
 
 export default function Home() {
-  return <Workspace />;
+  return <WorkspaceClient />;
 }
