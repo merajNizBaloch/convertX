@@ -27,6 +27,7 @@ const tools: Tool[] = [
 
 function bytes(n: number) { if (n < 1024) return `${n} B`; if (n < 1048576) return `${(n / 1024).toFixed(1)} KB`; return `${(n / 1048576).toFixed(2)} MB`; }
 function ext(name: string) { return name.split(".").pop()?.toUpperCase() || "FILE"; }
+function toArrayBuffer(bytes: Uint8Array): ArrayBuffer { const buffer = new ArrayBuffer(bytes.byteLength); new Uint8Array(buffer).set(bytes); return buffer; }
 
 export default function Workspace() {
   const input = useRef<HTMLInputElement>(null);
@@ -114,7 +115,7 @@ export default function Workspace() {
       const buf = await blob.arrayBuffer(); const image = f.type === "image/png" ? await pdf.embedPng(buf) : await pdf.embedJpg(buf);
       const page = pdf.addPage([image.width, image.height]); page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
     }
-    return new Blob([await pdf.save()], { type: "application/pdf" });
+    return new Blob([toArrayBuffer(await pdf.save())], { type: "application/pdf" });
   }
 
   async function renderPdf(file: File) {
@@ -124,7 +125,7 @@ export default function Workspace() {
     for (let i = 1; i <= pdf.numPages; i++) {
       setStage(`Rendering page ${i} of ${pdf.numPages}`); setProgress(Math.round(((i - 1) / pdf.numPages) * 100));
       const page = await pdf.getPage(i); const viewport = page.getViewport({ scale: 1.6 }); const canvas = document.createElement("canvas"); canvas.width = viewport.width; canvas.height = viewport.height;
-      const ctx = canvas.getContext("2d"); if (!ctx) continue; await page.render({ canvasContext: ctx, viewport }).promise;
+      const ctx = canvas.getContext("2d"); if (!ctx) continue; await page.render({ canvas, canvasContext: ctx, viewport }).promise;
       const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(b => b ? resolve(b) : reject(new Error("Render failed")), `image/${format}`));
       result.push({ name: `${file.name.replace(/\.pdf$/i, "")}-page-${i}.${format}`, blob, inputSize: file.size }); setProgress(Math.round((i / pdf.numPages) * 100));
     }
@@ -134,12 +135,12 @@ export default function Workspace() {
   async function mergePdfs(inputFiles: File[]) {
     const out = await PDFDocument.create();
     for (let i = 0; i < inputFiles.length; i++) { setStage(`Joining document ${i + 1} of ${inputFiles.length}`); setProgress(Math.round((i / inputFiles.length) * 100)); const src = await PDFDocument.load(await inputFiles[i].arrayBuffer()); const pages = await out.copyPages(src, src.getPageIndices()); pages.forEach(p => out.addPage(p)); }
-    setProgress(100); return new Blob([await out.save()], { type: "application/pdf" });
+    setProgress(100); return new Blob([toArrayBuffer(await out.save())], { type: "application/pdf" });
   }
 
   async function splitPdf(file: File) {
     const src = await PDFDocument.load(await file.arrayBuffer()); const out = await PDFDocument.create(); const index = Math.max(0, Math.min(src.getPageCount() - 1, splitPage - 1));
-    const [page] = await out.copyPages(src, [index]); out.addPage(page); setProgress(100); return new Blob([await out.save()], { type: "application/pdf" });
+    const [page] = await out.copyPages(src, [index]); out.addPage(page); setProgress(100); return new Blob([toArrayBuffer(await out.save())], { type: "application/pdf" });
   }
 
   async function convert() {
