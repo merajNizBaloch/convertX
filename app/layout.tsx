@@ -1,9 +1,62 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "PNG to JPG Converter — Free & Private",
-  description: "Convert PNG images to JPG directly in your browser. Fast, free, and private.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "ConvertX — Free Online Image & PDF Converter",
+    template: "%s | ConvertX",
+  },
+  description:
+    "Convert PNG, JPG, WEBP and PDF files online for free. ConvertX processes files directly in your browser with no account and no file upload required.",
+  applicationName: "ConvertX",
+  generator: "Next.js",
+  keywords: [
+    "PNG to JPG converter",
+    "JPG to PNG converter",
+    "WEBP to JPG converter",
+    "JPG to WEBP converter",
+    "image compressor",
+    "image resizer",
+    "image to PDF",
+    "PDF to JPG",
+    "PDF to PNG",
+    "merge PDF",
+    "split PDF",
+    "free online file converter",
+  ],
+  authors: [{ name: "ConvertX" }],
+  creator: "ConvertX",
+  publisher: "ConvertX",
+  category: "Utilities",
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: "ConvertX",
+    title: "ConvertX — Free Online Image & PDF Converter",
+    description:
+      "Free PNG, JPG, WEBP and PDF conversion in your browser. Fast, private and no account required.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ConvertX — Free Online Image & PDF Converter",
+    description:
+      "Convert images and PDFs for free directly in your browser.",
+  },
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
