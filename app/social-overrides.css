@@ -1,0 +1,15 @@
+/* Social header cleanup */
+@media (min-width: 701px) {
+  header .mx-auto::after {
+    width: 128px !important;
+    min-width: 128px !important;
+    background-image:
+      url("https://cdn.simpleicons.org/youtube/ffffff"),
+      url("https://cdn.simpleicons.org/instagram/ffffff"),
+      url("https://cdn.simpleicons.org/facebook/ffffff"),
+      url("https://cdn.simpleicons.org/tiktok/ffffff") !important;
+    background-repeat: no-repeat !important;
+    background-size: 20px 20px !important;
+    background-position: 0 center, 36px center, 72px center, 108px center !important;
+  }
+}
