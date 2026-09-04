@@ -30,8 +30,23 @@ export default function SocialLinks() {
   const [headerSlot, setHeaderSlot] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    const header = document.querySelector("header > div");
-    if (header instanceof HTMLElement) setHeaderSlot(header);
+    const findHeader = () => {
+      const header = document.querySelector("header > div");
+      if (header instanceof HTMLElement) {
+        setHeaderSlot(header);
+        return true;
+      }
+      return false;
+    };
+
+    if (findHeader()) return;
+
+    const observer = new MutationObserver(() => {
+      if (findHeader()) observer.disconnect();
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
   }, []);
 
   if (!headerSlot) return null;
