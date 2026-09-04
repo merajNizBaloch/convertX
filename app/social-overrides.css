@@ -62,6 +62,20 @@ header .mx-auto::after {
   display: none !important;
 }
 
+/* Light mode keeps the icon silhouettes and controls high contrast. */
+html[data-theme="light"] .convertx-social-link {
+  border-color: #d5dde6;
+  background: #f4f7fa;
+  opacity: 1;
+}
+html[data-theme="light"] .convertx-social-link img { filter: invert(1); }
+html[data-theme="light"] .convertx-social-link:hover {
+  border-color: #cf7f12;
+  background: #fff4df;
+  box-shadow: 0 8px 24px rgba(154,90,0,.14);
+}
+html[data-theme="light"] .convertx-social-link:focus-visible { outline-color: #9a5a00; }
+
 @media (max-width: 700px) {
   .convertx-social-links {
     gap: 4px;
@@ -101,4 +115,20 @@ header .mx-auto::after {
     width: 12px;
     height: 12px;
   }
+}
+
+@media (max-width: 700px) {
+  .convertx-theme-toggle {
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    margin-left: 5px;
+    padding: 0;
+  }
+  .convertx-theme-label { display: none; }
+}
+
+@media (max-width: 380px) {
+  .convertx-theme-toggle { width: 29px; height: 29px; border-radius: 8px; }
+  .convertx-theme-icon { width: 21px; height: 21px; border-radius: 6px; }
 }
