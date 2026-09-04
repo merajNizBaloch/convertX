@@ -103,7 +103,12 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
   transition: color .2s ease;
 }
 .techcraft-credit span { color: #3b82f6; font-size: 12px; line-height: 1; }
-.techcraft-credit strong { color: rgba(255,255,255,.68); font-weight: 800; }
+.techcraft-credit strong { color: rgba(255,255,255,.68); font-weight: 800; text-decoration: none !important; }
+.techcraft-credit a,
+.techcraft-credit a:visited,
+.techcraft-credit a:hover,
+.techcraft-credit a:focus,
+.techcraft-credit a:active { text-decoration: none !important; }
 .techcraft-credit:hover { color: rgba(255,255,255,.7); }
 .techcraft-credit:hover strong { color: #fff; }
 
