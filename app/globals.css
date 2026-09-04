@@ -6,24 +6,19 @@ html { scroll-behavior: smooth; }
 body { margin: 0; min-height: 100vh; font-family: Arial, Helvetica, sans-serif; overflow-x: hidden; }
 button, input, select { font: inherit; }
 
-/* ConvertX dock */
-nav.fixed.bottom-3,
-nav.fixed.bottom-4 {
+/* ConvertX desktop dock */
+nav.desktop-tool-dock {
   width: max-content !important;
   max-width: calc(100vw - 16px) !important;
   overflow: visible !important;
 }
-
-nav.fixed.bottom-3 > div,
-nav.fixed.bottom-4 > div {
+nav.desktop-tool-dock > div {
   min-width: 0 !important;
   max-width: calc(100vw - 28px) !important;
   overflow: visible !important;
   scrollbar-width: none !important;
-  -webkit-overflow-scrolling: touch;
 }
-nav.fixed.bottom-3 > div::-webkit-scrollbar,
-nav.fixed.bottom-4 > div::-webkit-scrollbar { display: none !important; }
+nav.desktop-tool-dock > div::-webkit-scrollbar { display: none !important; }
 
 .dock-item {
   width: 96px !important;
@@ -40,10 +35,8 @@ nav.fixed.bottom-4 > div::-webkit-scrollbar { display: none !important; }
 }
 .dock-item:hover { transform: translateY(-3px) scale(1.03) !important; }
 
-/* Active tool uses a neutral tile so the tool icon always stays visible. */
 .dock-item > span:first-child,
 .dock-item > span[class*="scale-105"] {
-  background: rgba(255,255,255,.07) !important;
   border-color: rgba(255,255,255,.28) !important;
   box-shadow: 0 8px 24px rgba(0,0,0,.28) !important;
 }
@@ -90,85 +83,123 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
 .work-grid .mt-6.rounded-2xl .text-\[9px\].font-black.uppercase { display: none !important; }
 .work-grid .min-h-\[420px\] > div > div > h2 { margin-top: 0 !important; }
 
+.mobile-tool-launcher { display: none; }
+
 @media (max-width: 900px) {
   header .mx-auto, section.work-grid > div { padding-left: 16px !important; padding-right: 16px !important; }
 }
 
-/* Real mobile toolbar: no horizontal scrolling, no overflow. */
+/* Mobile uses a floating hamburger button instead of the desktop dock. */
 @media (max-width: 700px) {
-  nav.fixed.bottom-3,
-  nav.fixed.bottom-4 {
-    position: fixed !important;
-    left: 8px !important;
-    right: 8px !important;
-    bottom: 10px !important;
-    width: auto !important;
-    max-width: none !important;
-    transform: none !important;
-    padding: 6px !important;
-    border-radius: 20px !important;
-    overflow: visible !important;
+  .desktop-tool-dock { display: none !important; }
+
+  .mobile-tool-launcher {
+    display: block;
+    position: fixed;
+    right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    z-index: 100;
   }
 
-  nav.fixed.bottom-3 > div,
-  nav.fixed.bottom-4 > div {
-    width: 100% !important;
-    max-width: none !important;
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    grid-auto-rows: auto !important;
-    align-items: start !important;
-    justify-items: center !important;
-    gap: 4px 2px !important;
-    padding: 4px 2px !important;
-    overflow: visible !important;
-    touch-action: auto !important;
+  .mobile-tool-toggle {
+    width: 56px;
+    height: 56px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 17px;
+    background: rgba(27,30,32,.98);
+    box-shadow: 0 16px 38px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04) inset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: #f4f1e8;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-tool-toggle span {
+    width: 22px;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    transition: transform .18s ease, opacity .18s ease;
+  }
+  .mobile-tool-launcher:has(.mobile-tool-panel) .mobile-tool-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .mobile-tool-launcher:has(.mobile-tool-panel) .mobile-tool-toggle span:nth-child(2) { opacity: 0; }
+  .mobile-tool-launcher:has(.mobile-tool-panel) .mobile-tool-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-tool-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    border: 0;
+    background: rgba(0,0,0,.35);
+    backdrop-filter: blur(2px);
   }
 
-  .dock-item,
-  .dock-item:hover,
-  .dock-item:active,
-  .dock-item:focus-visible {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    flex: none !important;
-    margin: 0 !important;
-    padding: 2px !important;
-    transform: none !important;
+  .mobile-tool-panel {
+    position: fixed;
+    right: 12px;
+    bottom: calc(82px + env(safe-area-inset-bottom));
+    width: min(340px, calc(100vw - 24px));
+    max-height: min(72vh, 520px);
+    overflow-y: auto;
+    padding: 14px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 22px;
+    background: rgba(24,27,29,.99);
+    box-shadow: 0 26px 80px rgba(0,0,0,.62);
+    backdrop-filter: blur(22px);
   }
 
-  .dock-item > span:first-child,
-  .dock-item > span[class*="scale-105"] {
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
-    min-height: 38px !important;
-    transform: none !important;
+  .mobile-tool-panel-title {
+    margin: 2px 4px 12px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.42);
   }
 
-  .dock-item > span[class*="scale-105"] svg,
-  .dock-item > span:first-child svg {
-    width: 18px !important;
-    height: 18px !important;
+  .mobile-tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
-
-  .dock-label,
-  .dock-item:hover .dock-label {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    height: 15px !important;
-    margin-top: 3px !important;
-    padding: 0 1px !important;
-    font-size: 7px !important;
-    line-height: 15px !important;
-    letter-spacing: 0 !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    opacity: 1 !important;
-    transform: none !important;
+  .mobile-tool-button {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    background: rgba(255,255,255,.025);
+    color: #fff;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-tool-button.is-active {
+    border-color: rgba(255,255,255,.25);
+    background: rgba(255,255,255,.07);
+  }
+  .mobile-tool-icon {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    place-items: center;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+  }
+  .mobile-tool-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: 800;
   }
 
   .work-grid { width: 100%; }
@@ -180,18 +211,15 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
   .work-grid aside { padding: 16px !important; }
   .work-grid .grid-cols-2 { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
   .work-grid .truncate { min-width: 0 !important; }
+  body { padding-bottom: 88px; }
 }
 
 @media (max-width: 420px) {
   header .h-16 { height: 58px !important; }
-  nav.fixed.bottom-3,
-  nav.fixed.bottom-4 { left: 6px !important; right: 6px !important; bottom: 8px !important; padding: 5px !important; }
-  nav.fixed.bottom-3 > div,
-  nav.fixed.bottom-4 > div { gap: 3px 1px !important; padding: 4px 1px !important; }
-  .dock-item > span:first-child,
-  .dock-item > span[class*="scale-105"] { width: 35px !important; height: 35px !important; min-width: 35px !important; min-height: 35px !important; }
-  .dock-item > span[class*="scale-105"] svg,
-  .dock-item > span:first-child svg { width: 17px !important; height: 17px !important; }
-  .dock-label { font-size: 6.5px !important; }
+  .mobile-tool-toggle { width: 54px; height: 54px; right: 0; }
+  .mobile-tool-panel { right: 10px; bottom: calc(78px + env(safe-area-inset-bottom)); width: min(320px, calc(100vw - 20px)); }
+  .mobile-tool-button { padding: 8px; }
+  .mobile-tool-icon { width: 36px; height: 36px; min-width: 36px; }
+  .mobile-tool-name { font-size: 9px; }
   .work-grid .min-h-\[420px\] { min-height: 270px !important; }
 }
