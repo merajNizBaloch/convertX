@@ -40,13 +40,14 @@ input {
   box-shadow: 0 10px 28px rgba(224, 161, 74, 0.28) !important;
 }
 
-/* Make dock names clearly readable below each icon. */
+/* Keep every dock tool name on a single readable line. */
 .dock-label {
   position: static !important;
   transform: none !important;
   opacity: 1 !important;
   display: block !important;
-  max-width: 92px;
+  width: max-content !important;
+  max-width: none !important;
   margin-top: 2px;
   padding: 0 !important;
   border: 0 !important;
@@ -55,7 +56,7 @@ input {
   line-height: 1.15 !important;
   letter-spacing: -0.01em !important;
   text-align: center;
-  white-space: normal !important;
+  white-space: nowrap !important;
   color: rgba(255, 255, 255, 0.72) !important;
 }
 
@@ -63,6 +64,7 @@ input {
 .dock-item .dock-label {
   transform: none !important;
   opacity: 1 !important;
+  white-space: nowrap !important;
 }
 
 .dock-item:has(> span[class*="bg-[#e0a14a]"]) .dock-label {
@@ -73,6 +75,5 @@ input {
 @media (max-width: 640px) {
   .dock-label {
     font-size: 10px !important;
-    max-width: 70px;
   }
 }
