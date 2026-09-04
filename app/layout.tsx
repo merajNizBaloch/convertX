@@ -47,12 +47,14 @@ export const metadata: Metadata = {
     title: "ConvertX — Free Online Image & PDF Converter",
     description:
       "Free PNG, JPG, WEBP and PDF conversion in your browser. Fast, private and no account required.",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "ConvertX — Free Online Image & PDF Converter" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "ConvertX — Free Online Image & PDF Converter",
     description:
       "Convert images and PDFs for free directly in your browser.",
+    images: ["/opengraph-image"],
   },
   icons: {
     icon: "/icon.svg",
