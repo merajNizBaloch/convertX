@@ -40,12 +40,13 @@ input {
   transform: translateY(-8px) scale(1.08) !important;
 }
 
-/* Keep the selected tool's active color visible on hover. */
-.dock-item:hover > span[class*="bg-[#e0a14a]"] {
-  background: #e0a14a !important;
+/* Active tool: the icon must always contrast against its active background. */
+.dock-item > span[class*="scale-105"] {
   color: #111315 !important;
-  border-color: rgba(224, 161, 74, 0.75) !important;
-  box-shadow: 0 10px 28px rgba(224, 161, 74, 0.28) !important;
+}
+
+.dock-item:hover > span[class*="scale-105"] {
+  color: #111315 !important;
 }
 
 /* Every label shares exactly the same typography, width and centerline. */
@@ -85,7 +86,7 @@ input {
   white-space: nowrap !important;
 }
 
-.dock-item:has(> span[class*="bg-[#e0a14a]"]) .dock-label {
+.dock-item:has(> span[class*="scale-105"]) .dock-label {
   color: #f4f1e8 !important;
   font-weight: 800 !important;
 }
