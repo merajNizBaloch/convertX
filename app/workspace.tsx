@@ -3,26 +3,26 @@
 import { ChangeEvent, DragEvent, useMemo, useRef, useState } from "react";
 import {
   ArrowDownToLine, ArrowRight, Check, FileImage, FileText, Files, Image as ImageIcon,
-  Layers, Scissors, ShieldCheck, Sparkles, Upload, X, Zap, Settings2, Hammer,
+  Layers, ShieldCheck, Upload, X, Zap, Settings2, Hammer,
   PackageOpen, Gauge, Maximize2, Minimize2, Combine, Split, RefreshCw
 } from "lucide-react";
 import { PDFDocument } from "pdf-lib";
 
 type ToolId = "png-jpg" | "jpg-png" | "webp-jpg" | "jpg-webp" | "image-pdf" | "pdf-image" | "compress" | "resize" | "merge" | "split";
-type Tool = { id: ToolId; title: string; short: string; description: string; group: "Image" | "PDF"; from: string; to: string; icon: typeof FileImage };
+type Tool = { id: ToolId; title: string; short: string; description: string; group: "Image" | "PDF"; from: string; to: string; icon: typeof FileImage; color: string; tint: string };
 type Output = { name: string; blob: Blob; inputSize: number };
 
 const tools: Tool[] = [
-  { id: "png-jpg", title: "PNG → JPG", short: "PNG / JPG", description: "Convert transparent PNG artwork into clean, compact JPG files.", group: "Image", from: "PNG", to: "JPG", icon: FileImage },
-  { id: "jpg-png", title: "JPG → PNG", short: "JPG / PNG", description: "Turn JPG images into lossless PNG assets for editing and design work.", group: "Image", from: "JPG", to: "PNG", icon: FileImage },
-  { id: "webp-jpg", title: "WEBP → JPG", short: "WEBP / JPG", description: "Convert WEBP images into widely compatible JPG files.", group: "Image", from: "WEBP", to: "JPG", icon: FileImage },
-  { id: "jpg-webp", title: "JPG → WEBP", short: "JPG / WEBP", description: "Produce efficient WEBP images for websites and digital products.", group: "Image", from: "JPG", to: "WEBP", icon: FileImage },
-  { id: "compress", title: "Image Compressor", short: "Compress", description: "Reduce file weight while keeping control over visual quality.", group: "Image", from: "IMG", to: "MIN", icon: Gauge },
-  { id: "resize", title: "Image Resizer", short: "Resize", description: "Set exact output dimensions for social, web, print, or UI assets.", group: "Image", from: "IMG", to: "PX", icon: Maximize2 },
-  { id: "image-pdf", title: "Images → PDF", short: "Images / PDF", description: "Arrange one or more images into a single PDF document.", group: "PDF", from: "IMG", to: "PDF", icon: FileText },
-  { id: "pdf-image", title: "PDF → JPG / PNG", short: "PDF / Image", description: "Render every PDF page into high-resolution JPG or PNG images.", group: "PDF", from: "PDF", to: "IMG", icon: FileText },
-  { id: "merge", title: "Merge PDF", short: "Merge PDF", description: "Join multiple PDF documents into one ordered file.", group: "PDF", from: "PDF", to: "PDF", icon: Combine },
-  { id: "split", title: "Split PDF", short: "Split PDF", description: "Extract a selected page from a PDF into a new document.", group: "PDF", from: "PDF", to: "PDF", icon: Split },
+  { id: "png-jpg", title: "PNG → JPG", short: "PNG / JPG", description: "Convert transparent PNG artwork into clean, compact JPG files.", group: "Image", from: "PNG", to: "JPG", icon: FileImage, color: "#ff6b6b", tint: "rgba(255,107,107,.15)" },
+  { id: "jpg-png", title: "JPG → PNG", short: "JPG / PNG", description: "Turn JPG images into lossless PNG assets for editing and design work.", group: "Image", from: "JPG", to: "PNG", icon: ImageIcon, color: "#38bdf8", tint: "rgba(56,189,248,.15)" },
+  { id: "webp-jpg", title: "WEBP → JPG", short: "WEBP / JPG", description: "Convert WEBP images into widely compatible JPG files.", group: "Image", from: "WEBP", to: "JPG", icon: Layers, color: "#a78bfa", tint: "rgba(167,139,250,.15)" },
+  { id: "jpg-webp", title: "JPG → WEBP", short: "JPG / WEBP", description: "Produce efficient WEBP images for websites and digital products.", group: "Image", from: "JPG", to: "WEBP", icon: Files, color: "#34d399", tint: "rgba(52,211,153,.15)" },
+  { id: "compress", title: "Image Compressor", short: "Compress", description: "Reduce file weight while keeping control over visual quality.", group: "Image", from: "IMG", to: "MIN", icon: Gauge, color: "#fbbf24", tint: "rgba(251,191,36,.15)" },
+  { id: "resize", title: "Image Resizer", short: "Resize", description: "Set exact output dimensions for social, web, print, or UI assets.", group: "Image", from: "IMG", to: "PX", icon: Maximize2, color: "#fb7185", tint: "rgba(251,113,133,.15)" },
+  { id: "image-pdf", title: "Images → PDF", short: "Images / PDF", description: "Arrange one or more images into a single PDF document.", group: "PDF", from: "IMG", to: "PDF", icon: FileText, color: "#f97316", tint: "rgba(249,115,22,.15)" },
+  { id: "pdf-image", title: "PDF → JPG / PNG", short: "PDF / Image", description: "Render every PDF page into high-resolution JPG or PNG images.", group: "PDF", from: "PDF", to: "IMG", icon: Minimize2, color: "#22d3ee", tint: "rgba(34,211,238,.15)" },
+  { id: "merge", title: "Merge PDF", short: "Merge PDF", description: "Join multiple PDF documents into one ordered file.", group: "PDF", from: "PDF", to: "PDF", icon: Combine, color: "#c084fc", tint: "rgba(192,132,252,.15)" },
+  { id: "split", title: "Split PDF", short: "Split PDF", description: "Extract a selected page from a PDF into a new document.", group: "PDF", from: "PDF", to: "PDF", icon: Split, color: "#4ade80", tint: "rgba(74,222,128,.15)" },
 ];
 
 function bytes(n: number) { if (n < 1024) return `${n} B`; if (n < 1048576) return `${(n / 1024).toFixed(1)} KB`; return `${(n / 1048576).toFixed(2)} MB`; }
@@ -136,8 +136,8 @@ export default function Workspace() {
   function download(item: Output) { const a = document.createElement("a"); a.href = URL.createObjectURL(item.blob); a.download = item.name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
   function downloadAll() { outputs.forEach((x, i) => setTimeout(() => download(x), i * 150)); }
 
-  return <main className="min-h-screen overflow-x-hidden bg-[#111315] text-[#f4f1e8] selection:bg-[#e0a14a] selection:text-black pb-28">
-    <style>{`@keyframes drift{from{background-position:0 0,0 0}to{background-position:42px 42px,42px 42px}} @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}} @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(224,161,74,.45)}70%{box-shadow:0 0 0 14px rgba(224,161,74,0)}100%{box-shadow:0 0 0 0 rgba(224,161,74,0)}} .dock-item{transition:transform .18s cubic-bezier(.2,.8,.2,1),margin .18s}.dock-item:hover{transform:translateY(-12px) scale(1.16);margin:0 8px}.dock-item:hover .dock-label{opacity:1;transform:translateY(0)} .work-grid{background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:42px 42px;animation:drift 16s linear infinite}`}</style>
+  return <main className="min-h-screen overflow-x-hidden bg-[#111315] text-[#f4f1e8] selection:bg-[#e0a14a] selection:text-black pb-32">
+    <style>{`@keyframes drift{from{background-position:0 0,0 0}to{background-position:42px 42px,42px 42px}} @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(224,161,74,.45)}70%{box-shadow:0 0 0 14px rgba(224,161,74,0)}100%{box-shadow:0 0 0 0 rgba(224,161,74,0)}} .dock-item{transition:transform .2s cubic-bezier(.2,.8,.2,1),margin .2s cubic-bezier(.2,.8,.2,1)} .dock-item:hover{transform:translateY(-10px) scale(1.1);margin:0 7px}.dock-item:hover .dock-label{opacity:1;transform:translateY(0)} .dock-label{transition:opacity .15s ease,transform .15s ease}.work-grid{background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:42px 42px;animation:drift 16s linear infinite}`}</style>
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#111315]/90 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-[1500px] items-center justify-between px-5 sm:px-8">
         <div className="flex items-center gap-3"><div className="grid h-9 w-9 place-items-center rounded-xl border border-[#e0a14a]/40 bg-[#1c1f21] text-[#e0a14a]"><Hammer size={18}/></div><div><div className="text-sm font-black tracking-tight">ConvertX</div><div className="text-[9px] font-bold uppercase tracking-[.28em] text-white/35">Digital Workshop</div></div></div>
@@ -178,9 +178,12 @@ export default function Workspace() {
       </div>
     </section>
 
-    <nav className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-[26px] border border-white/15 bg-[#1b1e20]/90 p-2 shadow-2xl shadow-black/60 backdrop-blur-2xl">
-      <div className="flex max-w-[calc(100vw-28px)] items-end gap-1 overflow-x-auto px-1 py-1 scrollbar-none">
-        {grouped.flatMap(g=>g.items).map(t=>{const Active=t.id===toolId; return <button key={t.id} onClick={()=>selectTool(t.id)} className="dock-item group relative flex w-[60px] shrink-0 flex-col items-center justify-end gap-1 rounded-2xl p-1.5 text-white/50"><span className={`grid h-11 w-11 place-items-center rounded-[15px] border transition ${Active ? "border-[#e0a14a]/60 bg-[#e0a14a] text-black shadow-lg shadow-[#e0a14a]/20" : "border-white/10 bg-[#25292b] group-hover:bg-[#303537]"}`}>{<t.icon size={19}/>}</span><span className={`dock-label pointer-events-none absolute -top-9 rounded-lg border border-white/10 bg-black/90 px-2 py-1 text-[9px] font-bold whitespace-nowrap text-white opacity-0 -translate-y-1 transition ${Active ? "opacity-100 translate-y-0" : ""}`}>{t.title}</span></button>})}
+    <nav className="fixed bottom-3 left-1/2 z-50 -translate-x-1/2 rounded-[26px] border border-white/15 bg-[#1b1e20]/95 px-2 pb-2 pt-2 shadow-2xl shadow-black/60 backdrop-blur-2xl sm:bottom-4">
+      <div className="flex max-w-[calc(100vw-20px)] items-end gap-1 overflow-visible px-1 pt-1 scrollbar-none">
+        {grouped.flatMap(g=>g.items).map(t=>{const Active=t.id===toolId; return <button key={t.id} onClick={()=>selectTool(t.id)} aria-label={t.title} className="dock-item group relative flex w-[68px] shrink-0 flex-col items-center justify-end gap-1 rounded-2xl p-1.5 text-white/50">
+          <span className={`grid h-11 w-11 place-items-center rounded-[15px] border shadow-lg transition ${Active ? "scale-105 border-white/30" : "border-white/10"}`} style={{color:t.color, backgroundColor:Active ? t.color : t.tint, boxShadow:Active ? `0 8px 24px ${t.color}35` : undefined}}><t.icon size={20} strokeWidth={2.2}/></span>
+          <span className={`dock-label pointer-events-none max-w-[66px] truncate text-center text-[8px] font-bold leading-3 tracking-tight text-white ${Active ? "opacity-100 translate-y-0" : "opacity-75"}`}>{t.title}</span>
+        </button>})}
       </div>
     </nav>
   </main>;
