@@ -223,3 +223,6 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
   .mobile-tool-name { font-size: 9px; }
   .work-grid .min-h-\[420px\] { min-height: 270px !important; }
 }
+
+
+@media (max-width:700px){.mobile-tool-launcher{display:block !important}.desktop-tool-dock{display:none !important}.mobile-tool-toggle{touch-action:manipulation}.mobile-tool-button{touch-action:manipulation}}

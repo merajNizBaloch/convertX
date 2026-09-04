@@ -44,6 +44,9 @@ export default function Workspace() {
   const [format, setFormat] = useState<"jpg" | "png">("jpg");
   const [splitPage, setSplitPage] = useState(1);
   const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
+  const MAX_IMAGE_SIZE = 20 * 1024 * 1024;
+  const MAX_PDF_SIZE = 40 * 1024 * 1024;
+  const MAX_BATCH_SIZE = 80 * 1024 * 1024;
   const tool = tools.find(t => t.id === toolId)!;
 
   const totalInput = files.reduce((n, f) => n + f.size, 0);
@@ -56,14 +59,41 @@ export default function Workspace() {
 
   function reset() { setFiles([]); setOutputs([]); setError(""); setProgress(0); setStage("Ready for material"); setBusy(false); if (input.current) input.current.value = ""; }
   function selectTool(id: ToolId) { setToolId(id); reset(); }
+  function acceptedTypes() {
+    switch (toolId) {
+      case "png-jpg": return { label: "PNG", accept: "image/png,.png", extensions: [".png"] };
+      case "jpg-png": return { label: "JPG / JPEG", accept: "image/jpeg,.jpg,.jpeg", extensions: [".jpg", ".jpeg"] };
+      case "webp-jpg": return { label: "WEBP", accept: "image/webp,.webp", extensions: [".webp"] };
+      case "jpg-webp": return { label: "JPG / JPEG", accept: "image/jpeg,.jpg,.jpeg", extensions: [".jpg", ".jpeg"] };
+      case "image-pdf": return { label: "PNG / JPG / JPEG / WEBP", accept: "image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp", extensions: [".png", ".jpg", ".jpeg", ".webp"] };
+      case "pdf-image":
+      case "merge":
+      case "split": return { label: "PDF", accept: ".pdf,application/pdf", extensions: [".pdf"] };
+      case "compress":
+      case "resize": return { label: "Image", accept: "image/*", extensions: [] };
+    }
+  }
+  function maxFileSize() { return tool.group === "PDF" && toolId !== "image-pdf" ? MAX_PDF_SIZE : MAX_IMAGE_SIZE; }
   function accepts(file: File) {
-    if (tool.group === "PDF") return toolId === "image-pdf" ? file.type.startsWith("image/") : file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
-    return file.type.startsWith("image/");
+    const name = file.name.toLowerCase();
+    if (toolId === "png-jpg") return file.type === "image/png" || name.endsWith(".png");
+    if (toolId === "jpg-png" || toolId === "jpg-webp") return file.type === "image/jpeg" || name.endsWith(".jpg") || name.endsWith(".jpeg");
+    if (toolId === "webp-jpg") return file.type === "image/webp" || name.endsWith(".webp");
+    if (toolId === "image-pdf") return [".png", ".jpg", ".jpeg", ".webp"].some(ext => name.endsWith(ext)) || ["image/png", "image/jpeg", "image/webp"].includes(file.type);
+    if (toolId === "compress" || toolId === "resize") return file.type.startsWith("image/");
+    return file.type === "application/pdf" || name.endsWith(".pdf");
   }
   function addFiles(list: FileList | File[]) {
-    const picked = Array.from(list).filter(accepts);
-    if (!picked.length) { setError(`This bench accepts ${tool.from} material.`); return; }
-    setError(""); setOutputs([]); setProgress(0); setFiles(prev => toolId === "split" ? picked.slice(0, 1) : [...prev, ...picked]);
+    const incoming = Array.from(list);
+    const invalid = incoming.find(file => !accepts(file));
+    if (invalid) { setError(`${invalid.name} is not a supported ${acceptedTypes().label} file for this tool.`); return; }
+    const limit = maxFileSize();
+    const tooLarge = incoming.find(file => file.size > limit);
+    if (tooLarge) { setError(`${tooLarge.name} is too large. Maximum allowed is ${bytes(limit)} per file.`); return; }
+    const currentSize = files.reduce((sum, file) => sum + file.size, 0);
+    const incomingSize = incoming.reduce((sum, file) => sum + file.size, 0);
+    if (currentSize + incomingSize > MAX_BATCH_SIZE) { setError(`The total upload limit is ${bytes(MAX_BATCH_SIZE)}. Remove some files before adding more.`); return; }
+    setError(""); setOutputs([]); setProgress(0); setFiles(prev => toolId === "split" ? incoming.slice(0, 1) : [...prev, ...incoming]);
   }
   function pick(e: ChangeEvent<HTMLInputElement>) { if (e.target.files) addFiles(e.target.files); }
   function drop(e: DragEvent<HTMLDivElement>) { e.preventDefault(); setDragging(false); addFiles(e.dataTransfer.files); }
@@ -154,9 +184,9 @@ export default function Workspace() {
         <div className="grid gap-5 lg:grid-cols-[1fr_330px]">
           <div className="rounded-3xl border border-white/10 bg-[#181b1d]/85 p-4 shadow-2xl shadow-black/30 sm:p-6">
             {files.length === 0 ? <div onDragOver={e=>{e.preventDefault();setDragging(true)}} onDragLeave={()=>setDragging(false)} onDrop={drop} onClick={()=>input.current?.click()} className={`group relative min-h-[420px] cursor-pointer overflow-hidden rounded-2xl border border-dashed ${dragging ? "border-[#e0a14a] bg-[#e0a14a]/10" : "border-white/15 bg-[#101214] hover:border-white/30"}`}>
-              <input ref={input} type="file" multiple accept={tool.group === "PDF" && toolId !== "image-pdf" ? ".pdf,application/pdf" : "image/*"} className="hidden" onChange={pick}/>
+              <input ref={input} type="file" multiple accept={acceptedTypes().accept} className="hidden" onChange={pick}/>
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(224,161,74,.08),transparent_45%)]"/>
-              <div className="relative grid min-h-[420px] place-items-center p-8 text-center"><div><div className="mx-auto grid h-20 w-20 place-items-center rounded-3xl border border-[#e0a14a]/30 bg-[#211d17] text-[#e0a14a] shadow-2xl shadow-black/40 group-hover:animate-[pulseRing_2s_infinite]"><Upload size={30}/></div><div className="mt-7 text-[10px] font-black uppercase tracking-[.25em] text-white/30">Material intake</div><h2 className="mt-2 text-2xl font-bold">Drop {tool.from} material here</h2><p className="mt-2 text-sm text-white/40">or click anywhere to load files from this device</p><div className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#e0a14a] px-5 py-3 text-sm font-black text-black"><Upload size={16}/> Load material</div><p className="mt-5 text-[10px] uppercase tracking-[.16em] text-white/25">Browser processing · files never leave this workstation</p></div></div>
+              <div className="relative grid min-h-[420px] place-items-center p-8 text-center"><div><div className="mx-auto grid h-20 w-20 place-items-center rounded-3xl border border-[#e0a14a]/30 bg-[#211d17] text-[#e0a14a] shadow-2xl shadow-black/40 group-hover:animate-[pulseRing_2s_infinite]"><Upload size={30}/></div><div className="mt-7 text-[10px] font-black uppercase tracking-[.25em] text-white/30">Material intake</div><h2 className="mt-2 text-2xl font-bold">Drop {tool.from} material here</h2><p className="mt-2 text-sm text-white/40">or click anywhere to load files from this device</p><div className="mt-4 text-[10px] font-bold uppercase tracking-[.12em] text-white/25">Accepted: {acceptedTypes().label} · Max {bytes(maxFileSize())} per file · {bytes(MAX_BATCH_SIZE)} total</div><div className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#e0a14a] px-5 py-3 text-sm font-black text-black"><Upload size={16}/> Load material</div><p className="mt-5 text-[10px] uppercase tracking-[.16em] text-white/25">Browser processing · files never leave this workstation</p></div></div>
             </div> : <div>
               <div className="flex flex-wrap items-center justify-between gap-3"><div><div className="text-[9px] font-black uppercase tracking-[.22em] text-[#e0a14a]">Material queue</div><div className="mt-1 text-sm font-bold">{files.length} item{files.length > 1 ? "s" : ""} · {bytes(totalInput)}</div></div><div className="flex gap-2"><button onClick={()=>input.current?.click()} className="rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-white/60 hover:bg-white/5">Add more</button><button onClick={reset} className="rounded-lg border border-white/10 p-2 text-white/45 hover:bg-white/5"><X size={16}/></button></div></div>
               <div className="mt-5 grid gap-2">{files.map((f,i)=><div key={`${f.name}-${i}`} className="flex items-center gap-3 rounded-xl border border-white/7 bg-[#101214] p-3"><div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/5 text-[#e0a14a]"><FileImage size={17}/></div><div className="min-w-0 flex-1"><div className="truncate text-sm font-semibold">{f.name}</div><div className="mt-0.5 text-[10px] uppercase tracking-[.1em] text-white/30">{ext(f.name)} · {bytes(f.size)}</div></div><button onClick={()=>setFiles(prev=>prev.filter((_,j)=>j!==i))} className="rounded-md p-2 text-white/25 hover:bg-white/5 hover:text-white"><X size={15}/></button></div>)}</div>
