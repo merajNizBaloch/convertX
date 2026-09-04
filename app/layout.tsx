@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./social-overrides.css";
+import SocialLinks from "./social-links";
 
 const siteUrl = "https://convertx.techcraftsolution.com";
 
@@ -65,7 +66,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SocialLinks />
+        {children}
+      </body>
     </html>
   );
 }
