@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+
 const socials = [
   {
     name: "YouTube",
@@ -24,7 +27,18 @@ const socials = [
 ];
 
 export default function SocialLinks() {
-  return (
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const headerSlot = document.querySelector("header > div");
+  if (!headerSlot) return null;
+
+  return createPortal(
     <nav className="convertx-social-links" aria-label="ConvertX social media">
       {socials.map((social) => (
         <a
@@ -39,6 +53,7 @@ export default function SocialLinks() {
           <img src={social.icon} alt="" aria-hidden="true" width="18" height="18" />
         </a>
       ))}
-    </nav>
+    </nav>,
+    headerSlot,
   );
 }
