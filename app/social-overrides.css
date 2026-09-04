@@ -1,15 +1,66 @@
-/* Social header cleanup */
+/* Clickable social links */
+.convertx-social-links {
+  position: fixed;
+  top: 14px;
+  right: 150px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.convertx-social-link {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  opacity: 0.55;
+  transform: translateY(0) scale(1);
+  transition:
+    transform 180ms cubic-bezier(.2,.8,.2,1),
+    opacity 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.convertx-social-link img {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.convertx-social-link:hover {
+  opacity: 1;
+  transform: translateY(-4px) scale(1.12) rotate(-2deg);
+  border-color: rgba(224, 161, 74, 0.45);
+  background: rgba(224, 161, 74, 0.12);
+  box-shadow: 0 8px 24px rgba(224, 161, 74, 0.16);
+}
+
+.convertx-social-link:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.convertx-social-link:focus-visible {
+  outline: 2px solid #e0a14a;
+  outline-offset: 3px;
+  opacity: 1;
+}
+
+@media (max-width: 700px) {
+  .convertx-social-links {
+    display: none;
+  }
+}
+
+/* Remove the old non-clickable pseudo-element icons. */
 @media (min-width: 701px) {
   header .mx-auto::after {
-    width: 128px !important;
-    min-width: 128px !important;
-    background-image:
-      url("https://cdn.simpleicons.org/youtube/ffffff"),
-      url("https://cdn.simpleicons.org/instagram/ffffff"),
-      url("https://cdn.simpleicons.org/facebook/ffffff"),
-      url("https://cdn.simpleicons.org/tiktok/ffffff") !important;
-    background-repeat: no-repeat !important;
-    background-size: 20px 20px !important;
-    background-position: 0 center, 36px center, 72px center, 108px center !important;
+    content: none !important;
+    display: none !important;
   }
 }
