@@ -1,12 +1,14 @@
-/* Social links live inside the sticky header, alongside the ConvertX branding. */
+/* Social links are rendered inside the sticky ConvertX header and stay with it while scrolling. */
 .convertx-social-links {
-  position: static;
-  z-index: auto;
+  position: absolute;
+  right: 178px;
+  top: 50%;
+  z-index: 5;
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-left: auto;
-  margin-right: 18px;
+  margin: 0;
+  transform: translateY(-50%);
   flex-shrink: 0;
 }
 
@@ -18,7 +20,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.03);
-  opacity: 0.55;
+  opacity: 0.7;
   transform: translateY(0) scale(1);
   transition:
     transform 180ms cubic-bezier(.2,.8,.2,1),
@@ -36,7 +38,7 @@
 
 .convertx-social-link:hover {
   opacity: 1;
-  transform: translateY(-4px) scale(1.12) rotate(-2deg);
+  transform: translateY(-3px) scale(1.1) rotate(-2deg);
   border-color: rgba(224, 161, 74, 0.45);
   background: rgba(224, 161, 74, 0.12);
   box-shadow: 0 8px 24px rgba(224, 161, 74, 0.16);
@@ -52,12 +54,10 @@
   opacity: 1;
 }
 
-/* Compact header layout on phones. */
 @media (max-width: 700px) {
   .convertx-social-links {
+    right: 126px;
     gap: 4px;
-    margin-left: 10px;
-    margin-right: 8px;
   }
 
   .convertx-social-link {
@@ -72,15 +72,14 @@
   }
 
   .convertx-social-link:hover {
-    transform: translateY(-2px) scale(1.08) rotate(-2deg);
+    transform: translateY(-2px) scale(1.06) rotate(-2deg);
   }
 }
 
 @media (max-width: 380px) {
   .convertx-social-links {
+    right: 112px;
     gap: 3px;
-    margin-left: 6px;
-    margin-right: 5px;
   }
 
   .convertx-social-link {
@@ -95,7 +94,7 @@
   }
 }
 
-/* Remove the old non-clickable pseudo-element icons. */
+/* Remove the old decorative, non-clickable social icons. */
 header .mx-auto::after {
   content: none !important;
   display: none !important;
