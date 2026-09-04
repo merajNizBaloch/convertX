@@ -1,6 +1,6 @@
 import WorkspaceClient from "./workspace-client";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = "https://convertx.techcraftsolution.com";
 
 const structuredData = {
   "@context": "https://schema.org",
