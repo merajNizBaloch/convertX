@@ -130,8 +130,23 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
     background-repeat: no-repeat;
     background-size: 20px 20px;
     background-position: 0 center, 36px center, 72px center, 108px center, 144px center;
-    opacity: .72;
+    opacity: .9;
   }
+  header .mx-auto::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    background: #0A66C2;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    z-index: 2;
+  }
+  header .mx-auto { position: relative; }
+  header .mx-auto::after { position: relative; z-index: 1; }
 }
 
 @media (max-width: 1200px) {
