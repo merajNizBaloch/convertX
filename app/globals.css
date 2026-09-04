@@ -85,8 +85,35 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
 
 .mobile-tool-launcher { display: none; }
 
+/* TechCraft credit */
+.convertx-app-shell { position: relative; min-height: 100vh; }
+.techcraft-credit {
+  position: absolute;
+  right: max(350px, calc((100vw - 1500px) / 2 + 330px));
+  bottom: 34px;
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255,255,255,.4);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .01em;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.techcraft-credit span { color: #3b82f6; font-size: 12px; line-height: 1; }
+.techcraft-credit strong { color: rgba(255,255,255,.68); font-weight: 800; }
+.techcraft-credit:hover { color: rgba(255,255,255,.7); }
+.techcraft-credit:hover strong { color: #fff; }
+
+@media (max-width: 1200px) {
+  .techcraft-credit { right: 360px; }
+}
+
 @media (max-width: 900px) {
   header .mx-auto, section.work-grid > div { padding-left: 16px !important; padding-right: 16px !important; }
+  .techcraft-credit { display: none; }
 }
 
 /* Mobile uses a floating hamburger button instead of the desktop dock. */
@@ -223,6 +250,5 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
   .mobile-tool-name { font-size: 9px; }
   .work-grid .min-h-\[420px\] { min-height: 270px !important; }
 }
-
 
 @media (max-width:700px){.mobile-tool-launcher{display:block !important}.desktop-tool-dock{display:none !important}.mobile-tool-toggle{touch-action:manipulation}.mobile-tool-button{touch-action:manipulation}}
