@@ -1,5 +1,5 @@
-import Converter from "./converter";
+import Workspace from "./workspace";
 
 export default function Home() {
-  return <Converter />;
+  return <Workspace />;
 }
