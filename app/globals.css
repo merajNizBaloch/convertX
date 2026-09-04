@@ -16,10 +16,12 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -95,33 +97,173 @@ header .hidden.items-center.gap-2.text-\[10px\] {
   display: none !important;
 }
 
-@media (max-width: 1100px) {
-  .dock-item {
-    width: 88px !important;
-    min-width: 88px !important;
-    flex-basis: 88px !important;
+/* Desktop-to-tablet layout tuning. */
+@media (max-width: 900px) {
+  header .mx-auto {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
-  .dock-label {
-    width: 88px !important;
-    min-width: 88px !important;
-    max-width: 88px !important;
-    font-size: 9px !important;
+  section.work-grid > div {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 }
 
+/* Phone layout. */
 @media (max-width: 700px) {
   .dock-item {
-    width: 76px !important;
-    min-width: 76px !important;
-    flex-basis: 76px !important;
+    width: 72px !important;
+    min-width: 72px !important;
+    flex-basis: 72px !important;
+    padding: 4px !important;
+  }
+
+  .dock-item:hover {
+    transform: translateY(-5px) scale(1.03) !important;
+    margin: 0 !important;
   }
 
   .dock-label {
-    width: 76px !important;
-    min-width: 76px !important;
-    max-width: 76px !important;
+    width: 72px !important;
+    min-width: 72px !important;
+    max-width: 72px !important;
     font-size: 8px !important;
     letter-spacing: 0.01em !important;
+  }
+
+  /* The ten tools remain accessible through horizontal touch scrolling. */
+  nav.fixed.bottom-3 {
+    left: 8px !important;
+    right: 8px !important;
+    width: auto !important;
+    max-width: none !important;
+    transform: none !important;
+    border-radius: 20px !important;
+  }
+
+  nav.fixed.bottom-3 > div {
+    max-width: none !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    justify-content: flex-start !important;
+    gap: 2px !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  nav.fixed.bottom-3 > div::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Prevent desktop sizing from creating horizontal overflow. */
+  .work-grid {
+    width: 100%;
+  }
+
+  .work-grid h1 {
+    font-size: clamp(1.8rem, 9vw, 2.5rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  /* Stack the status card below the tool heading on phones. */
+  .work-grid .mb-7.flex {
+    align-items: stretch !important;
+  }
+
+  .work-grid .mb-7.flex > div:last-child {
+    width: 100% !important;
+    text-align: left !important;
+  }
+
+  .work-grid .mb-7.flex > div:last-child .justify-end {
+    justify-content: flex-start !important;
+  }
+
+  /* Compact the main upload surface for small screens. */
+  .work-grid .min-h-\[420px\] {
+    min-height: 300px !important;
+  }
+
+  .work-grid .min-h-\[420px\] h2 {
+    font-size: 1.25rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .work-grid .min-h-\[420px\] p {
+    max-width: 280px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Prevent controls from becoming wider than the phone viewport. */
+  .work-grid .rounded-3xl {
+    max-width: 100%;
+  }
+
+  .work-grid .flex.flex-wrap.items-center.justify-between {
+    align-items: flex-start !important;
+  }
+
+  /* Keep tool specification readable without forcing desktop dimensions. */
+  .work-grid aside {
+    padding: 16px !important;
+  }
+
+  .work-grid aside .text-2xl {
+    font-size: 1.35rem !important;
+  }
+
+  /* Resize controls become a clean two-column mobile control strip. */
+  .work-grid .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  /* Output rows must never push the page wider than the viewport. */
+  .work-grid .truncate {
+    min-width: 0 !important;
+  }
+
+  body {
+    padding-bottom: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  header .h-16 {
+    height: 58px !important;
+  }
+
+  header .text-sm.font-black {
+    font-size: 13px !important;
+  }
+
+  header .text-\[9px\] {
+    font-size: 7px !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .dock-item {
+    width: 68px !important;
+    min-width: 68px !important;
+    flex-basis: 68px !important;
+  }
+
+  .dock-label {
+    width: 68px !important;
+    min-width: 68px !important;
+    max-width: 68px !important;
+    font-size: 7px !important;
+  }
+
+  .work-grid .p-8 {
+    padding: 20px !important;
+  }
+
+  .work-grid .min-h-\[420px\] {
+    min-height: 270px !important;
   }
 }
