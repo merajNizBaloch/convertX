@@ -1,6 +1,6 @@
 /* Clickable social links */
 .convertx-social-links {
-  position: fixed;
+  position: absolute;
   top: 14px;
   right: 150px;
   z-index: 60;
@@ -51,7 +51,7 @@
   opacity: 1;
 }
 
-/* Keep the social links visible on phones, but smaller and tighter. */
+/* On phones, keep the icons in normal document flow/scrolling behavior like the header branding. */
 @media (max-width: 700px) {
   .convertx-social-links {
     top: 10px;
@@ -75,7 +75,6 @@
   }
 }
 
-/* Very narrow phones: keep them compact without hiding them. */
 @media (max-width: 380px) {
   .convertx-social-links {
     right: 58px;
@@ -95,9 +94,7 @@
 }
 
 /* Remove the old non-clickable pseudo-element icons. */
-@media (min-width: 701px) {
-  header .mx-auto::after {
-    content: none !important;
-    display: none !important;
-  }
+header .mx-auto::after {
+  content: none !important;
+  display: none !important;
 }
