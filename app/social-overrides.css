@@ -1,13 +1,16 @@
-/* Social links live inside the sticky header, alongside the ConvertX branding. */
+/* Social links live inside the sticky header. */
 .convertx-social-links {
   position: static;
-  z-index: auto;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 8px;
   margin-left: auto;
   margin-right: 18px;
+  padding: 0;
   flex-shrink: 0;
+  visibility: visible;
+  opacity: 1;
 }
 
 .convertx-social-link {
@@ -15,10 +18,11 @@
   width: 34px;
   height: 34px;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  opacity: 0.55;
+  background: rgba(255, 255, 255, 0.04);
+  opacity: 0.82;
+  visibility: visible;
   transform: translateY(0) scale(1);
   transition:
     transform 180ms cubic-bezier(.2,.8,.2,1),
@@ -37,9 +41,9 @@
 .convertx-social-link:hover {
   opacity: 1;
   transform: translateY(-4px) scale(1.12) rotate(-2deg);
-  border-color: rgba(224, 161, 74, 0.45);
+  border-color: rgba(224, 161, 74, 0.55);
   background: rgba(224, 161, 74, 0.12);
-  box-shadow: 0 8px 24px rgba(224, 161, 74, 0.16);
+  box-shadow: 0 8px 24px rgba(224, 161, 74, 0.18);
 }
 
 .convertx-social-link:active {
@@ -52,11 +56,16 @@
   opacity: 1;
 }
 
-/* Compact header layout on phones. */
+/* Remove the legacy CSS-drawn icon strip, including LinkedIn. */
+header .mx-auto::after {
+  content: none !important;
+  display: none !important;
+}
+
 @media (max-width: 700px) {
   .convertx-social-links {
     gap: 4px;
-    margin-left: 10px;
+    margin-left: auto;
     margin-right: 8px;
   }
 
@@ -79,7 +88,6 @@
 @media (max-width: 380px) {
   .convertx-social-links {
     gap: 3px;
-    margin-left: 6px;
     margin-right: 5px;
   }
 
@@ -93,10 +101,4 @@
     width: 12px;
     height: 12px;
   }
-}
-
-/* Remove the old non-clickable pseudo-element icons, including legacy LinkedIn. */
-header .mx-auto::after {
-  content: none !important;
-  display: none !important;
 }
