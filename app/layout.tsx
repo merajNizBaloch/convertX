@@ -4,6 +4,7 @@ import "./retro-theme.css";
 import "./social-overrides.css";
 import SocialLinks from "./social-links";
 import ThemeToggle from "./theme-toggle";
+import WordingNormalizer from "./wording-normalizer";
 
 const siteUrl = "https://convertx.techcraftsolution.com";
 
@@ -71,6 +72,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <SocialLinks />
         <ThemeToggle />
+        <WordingNormalizer />
         {children}
       </body>
     </html>
