@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./social-overrides.css";
 
 const siteUrl = "https://convertx.techcraftsolution.com";
 
