@@ -1,59 +1,62 @@
-/* ConvertX social links live inside the header flex row. */
+/* Social links live inside the sticky header, alongside the ConvertX branding. */
 .convertx-social-links {
   position: static;
+  z-index: auto;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   margin-left: auto;
-  margin-right: 10px;
-  padding: 0;
+  margin-right: 18px;
   flex-shrink: 0;
 }
 
 .convertx-social-link {
   display: grid;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.035);
-  opacity: 0.82;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  opacity: 0.55;
   transform: translateY(0) scale(1);
-  transition: transform 180ms cubic-bezier(.2,.8,.2,1), opacity 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  transition:
+    transform 180ms cubic-bezier(.2,.8,.2,1),
+    opacity 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .convertx-social-link img {
   display: block;
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
 }
 
 .convertx-social-link:hover {
   opacity: 1;
-  transform: translateY(-2px) scale(1.06);
-  border-color: rgba(224, 161, 74, 0.55);
+  transform: translateY(-4px) scale(1.12) rotate(-2deg);
+  border-color: rgba(224, 161, 74, 0.45);
   background: rgba(224, 161, 74, 0.12);
-  box-shadow: 0 6px 16px rgba(224, 161, 74, 0.14);
+  box-shadow: 0 8px 24px rgba(224, 161, 74, 0.16);
 }
 
 .convertx-social-link:active {
-  transform: translateY(0) scale(0.98);
+  transform: translateY(-1px) scale(0.98);
 }
 
 .convertx-social-link:focus-visible {
   outline: 2px solid #e0a14a;
-  outline-offset: 2px;
+  outline-offset: 3px;
   opacity: 1;
 }
 
+/* Compact header layout on phones. */
 @media (max-width: 700px) {
-  header > div > div:last-child {
-    display: none !important;
-  }
-
   .convertx-social-links {
     gap: 4px;
+    margin-left: 10px;
     margin-right: 8px;
   }
 
@@ -67,12 +70,17 @@
     width: 14px;
     height: 14px;
   }
+
+  .convertx-social-link:hover {
+    transform: translateY(-2px) scale(1.08) rotate(-2deg);
+  }
 }
 
 @media (max-width: 380px) {
   .convertx-social-links {
     gap: 3px;
-    margin-right: 6px;
+    margin-left: 6px;
+    margin-right: 5px;
   }
 
   .convertx-social-link {
@@ -85,4 +93,10 @@
     width: 12px;
     height: 12px;
   }
+}
+
+/* Remove the old non-clickable pseudo-element icons, including legacy LinkedIn. */
+header .mx-auto::after {
+  content: none !important;
+  display: none !important;
 }
