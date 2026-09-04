@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./retro-theme.css";
 import "./social-overrides.css";
+import "./conversion-cursor.css";
 import SocialLinks from "./social-links";
 import ThemeToggle from "./theme-toggle";
 import WordingNormalizer from "./wording-normalizer";
