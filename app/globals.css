@@ -110,7 +110,7 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
 .techcraft-credit a:focus,
 .techcraft-credit a:active { text-decoration: none !important; }
 .techcraft-credit:hover { color: rgba(255,255,255,.7); }
-.techcraft-credit:hover strong { color: #fff; }
+.techcraft-credit:hover strong { color: #fff; text-decoration: none !important; }
 
 @media (max-width: 1200px) {
   .techcraft-credit { right: 360px; }
