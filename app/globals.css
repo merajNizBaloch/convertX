@@ -112,6 +112,28 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
 .techcraft-credit:hover { color: rgba(255,255,255,.7); }
 .techcraft-credit:hover strong { color: #fff; text-decoration: none !important; }
 
+/* Social icons — visual only for now; links will be added later. */
+@media (min-width: 701px) {
+  header .mx-auto::after {
+    content: "";
+    display: block;
+    width: 164px;
+    min-width: 164px;
+    height: 28px;
+    margin-left: 14px;
+    background-image:
+      url("https://cdn.simpleicons.org/youtube/ffffff"),
+      url("https://cdn.simpleicons.org/instagram/ffffff"),
+      url("https://cdn.simpleicons.org/facebook/ffffff"),
+      url("https://cdn.simpleicons.org/linkedin/ffffff"),
+      url("https://cdn.simpleicons.org/tiktok/ffffff");
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: 0 center, 36px center, 72px center, 108px center, 144px center;
+    opacity: .72;
+  }
+}
+
 @media (max-width: 1200px) {
   .techcraft-credit { right: 360px; }
 }
