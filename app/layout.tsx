@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./retro-theme.css";
 import "./social-overrides.css";
 import SocialLinks from "./social-links";
 import ThemeToggle from "./theme-toggle";
