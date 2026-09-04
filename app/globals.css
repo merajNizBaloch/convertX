@@ -42,7 +42,6 @@ select {
   transform: translateY(-8px) scale(1.08) !important;
 }
 
-/* Keep the selected tool's active color visible on hover. */
 .dock-item:hover > span[class*="bg-[#e0a14a]"] {
   background: #e0a14a !important;
   color: #111315 !important;
@@ -50,7 +49,6 @@ select {
   box-shadow: 0 10px 28px rgba(224, 161, 74, 0.28) !important;
 }
 
-/* Every label shares exactly the same typography, width and centerline. */
 .dock-label {
   position: static !important;
   display: block !important;
@@ -92,9 +90,23 @@ select {
   font-weight: 800 !important;
 }
 
-/* Hide implementation details from the customer-facing interface. */
-header .hidden.items-center.gap-2.text-\[10px\] {
+/* Remove workshop/fabrication jargon from the customer-facing UI. */
+header .hidden.items-center.gap-2.text-\[10px\],
+header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
+.work-grid .mb-7.flex > div:first-child > div:first-child,
+.work-grid .mb-7.flex > div:last-child,
+.work-grid .min-h-\[420px\] > div > div > div:nth-child(2),
+.work-grid .min-h-\[420px\] > div > div > p:last-child,
+.work-grid .flex.flex-wrap.items-center.justify-between > div:first-child > div:first-child,
+.work-grid aside > div:first-child,
+.work-grid aside > div:last-child,
+.work-grid .mt-6.rounded-2xl .text-\[9px\].font-black.uppercase {
   display: none !important;
+}
+
+/* Keep the upload area clean after removing the workshop label. */
+.work-grid .min-h-\[420px\] > div > div > h2 {
+  margin-top: 0 !important;
 }
 
 /* Desktop-to-tablet layout tuning. */
@@ -132,7 +144,6 @@ header .hidden.items-center.gap-2.text-\[10px\] {
     letter-spacing: 0.01em !important;
   }
 
-  /* The ten tools remain accessible through horizontal touch scrolling. */
   nav.fixed.bottom-3 {
     left: 8px !important;
     right: 8px !important;
@@ -159,7 +170,6 @@ header .hidden.items-center.gap-2.text-\[10px\] {
     display: none;
   }
 
-  /* Prevent desktop sizing from creating horizontal overflow. */
   .work-grid {
     width: 100%;
   }
@@ -169,21 +179,10 @@ header .hidden.items-center.gap-2.text-\[10px\] {
     line-height: 1.05 !important;
   }
 
-  /* Stack the status card below the tool heading on phones. */
   .work-grid .mb-7.flex {
     align-items: stretch !important;
   }
 
-  .work-grid .mb-7.flex > div:last-child {
-    width: 100% !important;
-    text-align: left !important;
-  }
-
-  .work-grid .mb-7.flex > div:last-child .justify-end {
-    justify-content: flex-start !important;
-  }
-
-  /* Compact the main upload surface for small screens. */
   .work-grid .min-h-\[420px\] {
     min-height: 300px !important;
   }
@@ -199,7 +198,6 @@ header .hidden.items-center.gap-2.text-\[10px\] {
     margin-right: auto !important;
   }
 
-  /* Prevent controls from becoming wider than the phone viewport. */
   .work-grid .rounded-3xl {
     max-width: 100%;
   }
@@ -208,7 +206,6 @@ header .hidden.items-center.gap-2.text-\[10px\] {
     align-items: flex-start !important;
   }
 
-  /* Keep tool specification readable without forcing desktop dimensions. */
   .work-grid aside {
     padding: 16px !important;
   }
@@ -217,12 +214,10 @@ header .hidden.items-center.gap-2.text-\[10px\] {
     font-size: 1.35rem !important;
   }
 
-  /* Resize controls become a clean two-column mobile control strip. */
   .work-grid .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 
-  /* Output rows must never push the page wider than the viewport. */
   .work-grid .truncate {
     min-width: 0 !important;
   }
