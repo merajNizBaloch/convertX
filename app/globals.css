@@ -9,19 +9,22 @@ button, input, select { font: inherit; }
 /* ConvertX dock */
 nav.fixed.bottom-3,
 nav.fixed.bottom-4 {
-  width: max-content !important;
+  width: min(100%, max-content) !important;
   max-width: calc(100vw - 16px) !important;
-  overflow: visible !important;
+  overflow: hidden !important;
 }
+
 nav.fixed.bottom-3 > div,
 nav.fixed.bottom-4 > div {
   min-width: 0 !important;
   max-width: calc(100vw - 28px) !important;
   overflow-x: auto !important;
-  overflow-y: visible !important;
+  overflow-y: hidden !important;
   scrollbar-width: none !important;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
+  padding-top: 8px !important;
+  padding-bottom: 6px !important;
 }
 nav.fixed.bottom-3 > div::-webkit-scrollbar,
 nav.fixed.bottom-4 > div::-webkit-scrollbar { display: none !important; }
@@ -37,11 +40,11 @@ nav.fixed.bottom-4 > div::-webkit-scrollbar { display: none !important; }
   text-align: center !important;
   margin: 0 !important;
   overflow: visible !important;
-  transition: transform .2s cubic-bezier(.2,.8,.2,1) !important;
+  transition: transform .18s ease !important;
 }
-.dock-item:hover { transform: translateY(-8px) scale(1.06) !important; }
+.dock-item:hover { transform: translateY(-3px) scale(1.03) !important; }
 
-/* Never let the active tool become a solid-color square. */
+/* Active tool uses a neutral tile so the tool icon always stays visible. */
 .dock-item > span:first-child,
 .dock-item > span[class*="scale-105"] {
   background: rgba(255,255,255,.07) !important;
@@ -103,15 +106,17 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
     width: auto !important;
     max-width: none !important;
     transform: none !important;
-    padding: 6px !important;
+    padding: 4px !important;
     border-radius: 20px !important;
   }
   nav.fixed.bottom-3 > div, nav.fixed.bottom-4 > div {
     width: 100% !important;
     max-width: none !important;
-    padding: 0 2px !important;
+    padding: 8px 2px 6px !important;
     gap: 0 !important;
     justify-content: flex-start !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
   }
   .dock-item {
     width: 74px !important;
@@ -119,7 +124,9 @@ header .flex.items-center.gap-2.rounded-lg.border.border-white\/10,
     flex-basis: 74px !important;
     padding: 3px !important;
   }
-  .dock-item:hover { transform: translateY(-4px) scale(1.02) !important; }
+  /* Do not lift the item on touch/mobile; it causes the icon to clip at the dock edge. */
+  .dock-item:hover,
+  .dock-item:active { transform: none !important; }
   .dock-item > span:first-child { width: 42px !important; height: 42px !important; }
   .dock-label {
     width: 74px !important;
