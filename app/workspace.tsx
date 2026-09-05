@@ -125,7 +125,7 @@ export default function Workspace() {
     for (let i = 1; i <= pdf.numPages; i++) {
       setStage(`Rendering page ${i} of ${pdf.numPages}`); setProgress(Math.round(((i - 1) / pdf.numPages) * 100));
       const page = await pdf.getPage(i); const viewport = page.getViewport({ scale: 1.6 }); const canvas = document.createElement("canvas"); canvas.width = viewport.width; canvas.height = viewport.height;
-      const ctx = canvas.getContext("2d"); if (!ctx) continue; await page.render({ canvas, canvasContext: ctx, viewport }).promise;
+      const ctx = canvas.getContext("2d"); if (!ctx) continue; await page.render({ canvas, viewport }).promise;
       const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(b => b ? resolve(b) : reject(new Error("Render failed")), `image/${format}`));
       result.push({ name: `${file.name.replace(/\.pdf$/i, "")}-page-${i}.${format}`, blob, inputSize: file.size }); setProgress(Math.round((i / pdf.numPages) * 100));
     }
