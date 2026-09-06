@@ -1,4 +1,5 @@
 import WorkspaceClient from "./workspace-client";
+import ToolRouter from "./tool-router";
 
 const siteUrl = "https://convertx.techcraftsolution.com";
 
@@ -46,6 +47,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <WorkspaceClient />
+      <ToolRouter />
       <section className="sr-only" aria-label="About ConvertX">
         <h1>Free Online Image and PDF Converter</h1>
         <p>
